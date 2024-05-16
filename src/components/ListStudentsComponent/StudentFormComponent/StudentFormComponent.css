@@ -1,0 +1,36 @@
+.student-form{
+    background-color: #F4DFC8;
+    box-shadow: 0 1px 5px rgb(138, 137, 137);
+    height: 450px;
+    width: 330px;
+    padding: 10px 30px 30px 30px;
+    border-radius: 15px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 150px;
+    margin: 0 auto 0 auto;
+}
+
+.student-form label{
+    display: block;
+    margin-top: 5px;
+}
+
+.student-form .error-message{
+    font-size: 0.8rem;
+    color: red;
+}
+
+.student-submit{
+    width: 100px;
+    margin: 5px auto 0 auto;
+}
+
+fieldset:last-of-type{
+    margin-bottom: 5px;
+}
+
+.error-paragraph{
+    margin-top: 20px;
+}

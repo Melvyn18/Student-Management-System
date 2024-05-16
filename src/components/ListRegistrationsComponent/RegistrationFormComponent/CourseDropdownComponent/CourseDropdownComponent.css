@@ -1,0 +1,11 @@
+.course-field{
+    width: 300px;
+    font-family: inherit;
+    display: block;
+    outline: none;
+    box-shadow: 0 1px 5px rgb(138, 137, 137);
+    border: none;
+    border-radius: 7px;
+    padding: 10px;
+    margin: 10px auto;
+}

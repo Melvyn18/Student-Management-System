@@ -1,0 +1,87 @@
+.login p{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 150px;
+    font-size: 1.5rem;
+    text-shadow: 1px 1px gray;
+}
+
+.login-image{
+    object-fit: cover;
+    height: 85vh;
+    width: 100%;
+    opacity: 0.5;
+}
+
+input{
+    font-family: inherit;
+    display: block;
+    width: 300px;
+    outline: none;
+    box-shadow: 0 1px 5px rgb(138, 137, 137);
+    border: none;
+    border-radius: 7px;
+    padding: 10px; 
+    margin: 10px auto;   
+}
+
+.login-input{
+    margin-top: 20px;
+    width: 100px;
+}
+
+.login-form{
+    background-color: #F4DFC8;
+    box-shadow: 0 1px 5px rgb(138, 137, 137);
+    height: 250px;
+    width: 330px;
+    padding: 30px;
+    border-radius: 15px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 250px;
+    margin: auto;
+}
+
+fieldset{
+    border: 0;
+}
+
+.login-form fieldset label{
+    font-size: 1.5rem;
+}
+
+/* @media (min-width: 768px) and (max-width: 1200px){
+    .header-component{
+        width: 100%;
+    }
+} */
+
+@media (min-width: 320px) and (max-width: 768px){
+
+    .login p{
+        top: 150px;
+        font-size: 1rem;
+    }
+
+    input{
+        width: 280px; 
+    }
+
+
+    .login-image{
+        height: 90vh;
+    }
+
+    .login-form{
+        width: 300px;
+        padding: 30px;
+        /* top: 250px; */
+    }
+
+    .login-form fieldset label{
+        font-size: 1rem;
+    }
+}
