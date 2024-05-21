@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { retrieveAllCoursesApi } from "../../api/CourseApiService";
 import CourseComponent from "./CourseComponent/CourseComponent";
 import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
 
 export default function ListCoursesComponent(){
 
@@ -14,8 +15,10 @@ export default function ListCoursesComponent(){
 
     useEffect(() => refreshCourses(), []);
 
+    const token = Cookies.get('authorizationToken');
+
     function refreshCourses(){
-        retrieveAllCoursesApi()
+        retrieveAllCoursesApi(token)
         .then(response => {
             setCourseArray(response.data)
             console.log(courseArray);

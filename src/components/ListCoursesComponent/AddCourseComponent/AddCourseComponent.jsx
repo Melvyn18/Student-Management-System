@@ -3,6 +3,7 @@ import CourseFormComponent from "../CourseFormComponent/CourseFormComponent";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { retrieveCourseApi } from "../../../api/CourseApiService";
+import Cookies from "js-cookie";
 
 export default function AddCourseComponent() {
 
@@ -10,11 +11,13 @@ export default function AddCourseComponent() {
 
   const [course, setCourse] = useState({});
 
+  const token = Cookies.get('authorizationToken');
+
   useEffect(() => {
     async function fetchCourse(){
       console.log(id);
       if(id !== undefined){
-        const response = await retrieveCourseApi(id);
+        const response = await retrieveCourseApi(id, token);
       // console.log(response);
       setCourse(response.data);
       // console.log(student);

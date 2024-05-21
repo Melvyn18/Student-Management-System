@@ -7,6 +7,8 @@ import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import loginReducer from '../src/slices/loginSlice.js';
 import userReducer from '../src/slices/userSlice.js';
+// import { CookiesProvider } from 'react-cookie';
+// import { useCookies } from "react-cookie";
 
 const store = configureStore({
   reducer: {
@@ -15,12 +17,17 @@ const store = configureStore({
   }
 })
 
+// const [cookies, setCookie, removeCookie] = useCookies(['user']);
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App/>
-    </Provider>
+    {/* <CookiesProvider> */}
+      <Provider store={store}>
+        <App/>
+      </Provider>
+    {/* </CookiesProvider> */}
+    
     
   </React.StrictMode>
 );

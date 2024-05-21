@@ -3,14 +3,17 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteStudentApi } from "../../../api/StudentApiService";
 import UpdateIcon from "@mui/icons-material/Update"
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 export default function StudentComponent(props) {
 
   const navigate = useNavigate();
 
+  const token = Cookies.get('authorizationToken');
+
   function handleDelete(id){
     console.log("Id is: " + id);
-    deleteStudentApi(id)
+    deleteStudentApi(id, token)
     .then(respose => {
       console.log(respose)
       props.setError(false)
@@ -24,7 +27,7 @@ export default function StudentComponent(props) {
     })
   }
 
-  function handleUpdate(id){
+  function handleUpdate(id, token){
     navigate(`/update-student/${id}`);
   }
 

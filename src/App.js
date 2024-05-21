@@ -1,4 +1,6 @@
 import "./App.css";
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 import LoginComponent from "./components/LoginComponent/LoginComponent";
 import FooterComponent from "./components/FooterComponent/FooterComponent";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -14,8 +16,26 @@ import ListRegistrationsComponent from "./components/ListRegistrationsComponent/
 import AddRegistrationComponent from "./components/ListRegistrationsComponent/AddRegistrationComponent/AddRegistrationComponent";
 import ListMarksComponent from "./components/ListMarksComponent/ListMarksComponent";
 import AddMarkComponent from "./components/ListMarksComponent/AddMarkComponent/AddMarkComponent";
+import StatisticsComponent from "./components/ListMarksComponent/StatisticsComponent/StatisticsComponent";
+import Cookies from "js-cookie";
+
+function AuthenticatedRoute({children}){
+
+  // let isLoggedIn = useSelector(state => state.isLoggedIn.value);
+
+  let isLoggedIn = Cookies.get('loggedIn');
+
+  console.log(isLoggedIn, "Logged");
+
+  if(isLoggedIn){
+      return children
+  }
+
+  return <Navigate to="/"/>
+}
 
 function App() {
+
   return (
     <div className="App">
       <BrowserRouter>
@@ -25,24 +45,90 @@ function App() {
           <Route path="/" element={<LoginComponent />} />
           <Route path="/login" element={<LoginComponent />} />
           <Route path="*" element={<ErrorComponent />} />
-          <Route path="/welcome" element={<WelcomeComponent />} />
-
-          <Route path="/students" element={<ListStudentsComponent />} />
-          <Route path="/add-student" element={<AddStudentComponent />} />
-          <Route path="/update-student/:id" element={<AddStudentComponent />} />
+          <Route path="/welcome" element={
+            <AuthenticatedRoute>
+              <WelcomeComponent />
+            </AuthenticatedRoute>
           
-          <Route path="/courses" element={<ListCoursesComponent />} />
-          <Route path="/add-course" element={<AddCourseComponent />} />
-          <Route path="/update-course/:id" element={<AddCourseComponent />} />
+          } />
 
-          <Route path="/registrations" element={<ListRegistrationsComponent />} />
-          <Route path="/add-registration" element={<AddRegistrationComponent />} />
+          <Route path="/students" element={
+            <AuthenticatedRoute>
+              <ListStudentsComponent />
+            </AuthenticatedRoute>
+          
+          } />
+          <Route path="/add-student" element={
+            <AuthenticatedRoute>
+            <AddStudentComponent />
+          </AuthenticatedRoute>
+          
+          } />
+          <Route path="/update-student/:id" element={
+            <AuthenticatedRoute>
+            <AddStudentComponent />
+          </AuthenticatedRoute>
+          
+        } />
+          
+          <Route path="/courses" element={
+            <AuthenticatedRoute>
+            <ListCoursesComponent />
+          </AuthenticatedRoute>
+          
+          } />
+          <Route path="/add-course" element={
+            <AuthenticatedRoute>
+            <AddCourseComponent />
+          </AuthenticatedRoute>
+          
+          } />
+          <Route path="/update-course/:id" element={
+          <AuthenticatedRoute>
+          <AddCourseComponent />
+        </AuthenticatedRoute>
+          } />
+
+          <Route path="/registrations" element={
+            <AuthenticatedRoute>
+            <ListRegistrationsComponent />
+          </AuthenticatedRoute>
+          
+          } />
+          <Route path="/add-registration" element={
+            <AuthenticatedRoute>
+            <AddRegistrationComponent />
+          </AuthenticatedRoute>
+          
+          } />
           {/* <Route path="/update-course/:id" element={<AddCourseComponent />} /> */}
 
-          <Route path="/marks" element={<ListMarksComponent />} />
-          <Route path="/add-mark" element={<AddMarkComponent />} />
+          <Route path="/marks" element={
+            <AuthenticatedRoute>
+            <ListMarksComponent />
+          </AuthenticatedRoute>
+          
+          } />
+          <Route path="/add-mark" element={
+            <AuthenticatedRoute>
+            <AddMarkComponent />
+          </AuthenticatedRoute>
+          
+          } />
 
-          <Route path="/logout" element={<LogoutComponent />} />
+          <Route path="/logout" element={
+            // <AuthenticatedRoute>
+            <LogoutComponent />
+          // </AuthenticatedRoute>
+          
+          } />
+
+          <Route path="/statistics" element = {
+            <AuthenticatedRoute>
+              <StatisticsComponent />
+            </AuthenticatedRoute>
+          }
+          />
 
         </Routes>
         {/* <FooterComponent /> */}

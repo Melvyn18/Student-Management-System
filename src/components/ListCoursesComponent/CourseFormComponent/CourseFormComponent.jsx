@@ -1,10 +1,10 @@
 import { useState } from "react";
 import "./CourseFormComponent.css";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import moment from "moment";
 import { addCourseApi } from "../../../api/CourseApiService";
 import { updateCourseApi } from "../../../api/CourseApiService";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 export default function CourseFormComponent(props) {
 
@@ -12,7 +12,7 @@ export default function CourseFormComponent(props) {
 
     const [isError, setError] = useState(false);
 
-    console.log(props.course);
+    const token = Cookies.get('authorizationToken');
 
   const [style, setStyle] = useState({
     marginTop: "20px",
@@ -33,7 +33,7 @@ export default function CourseFormComponent(props) {
       console.log(values.courseId);
       // setError(false);
 
-      updateCourseApi(course)
+      updateCourseApi(course, token)
       .then(response => {
         console.log(response)
         navigate('/courses');
@@ -67,14 +67,14 @@ export default function CourseFormComponent(props) {
 
     let errors = {};
 
-    if (values.courseName == undefined || values.courseName.length < 5) {
-      errors.courseName = "Enter atleast 5 characters";
+    if (values.courseName == undefined || values.courseName.length < 5 || values.courseName.length > 20) {
+      errors.courseName = "Enter 5 to 20 characters";
       setStyle({ marginTop: "10px" });
     }
 
-    if (values.courseDescription == undefined || values.courseDescription.length < 5
+    if (values.courseDescription == undefined || values.courseDescription.length < 5 || values.courseDescription.length > 30
     ) {
-      errors.courseDescription = "Provide a longer description";
+      errors.courseDescription = "Description should be b/w 10 to 30 characters";
       setStyle({ marginTop: "10px" });
     }
 

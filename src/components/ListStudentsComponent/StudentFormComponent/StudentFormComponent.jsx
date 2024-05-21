@@ -5,6 +5,7 @@ import moment from "moment";
 import { addStudentApi } from "../../../api/StudentApiService";
 import { updateStudentApi } from "../../../api/StudentApiService";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 export default function StudentFormComponent(props) {
 
@@ -12,14 +13,14 @@ export default function StudentFormComponent(props) {
 
     const [isError, setError] = useState(false);
 
-    console.log(props.student);
+    const token = Cookies.get('authorizationToken');
 
   const [style, setStyle] = useState({
     marginTop: "20px",
   });
+  
 
   function onSubmit(values) {
-    console.log(values);
     const student = {
       studentId: props.student.studentId,
       name: values.name,
@@ -34,9 +35,8 @@ export default function StudentFormComponent(props) {
       console.log(values.studentId);
       // setError(false);
 
-      updateStudentApi(student)
+      updateStudentApi(student, token)
       .then(response => {
-        console.log(response)
         navigate('/students');
       })
       .catch(error => console.log(error))
@@ -46,9 +46,8 @@ export default function StudentFormComponent(props) {
 
     console.log("Undefined");
 
-    addStudentApi(student)
+    addStudentApi(student, token)
       .then((respone) => {
-        console.log(respone.status)
         if(respone.status == 200){
             navigate('/students');
         }
@@ -63,13 +62,14 @@ export default function StudentFormComponent(props) {
   }
 
   function validate(values) {
+    setError(false);
     // let date = new Date();
     // date.setFullYear(date.getFullYear() - 10);
 
     let errors = {};
 
-    if (values.name === undefined || values.name.length < 5) {
-      errors.name = "Enter atleast 5 characters";
+    if (values.name === undefined || values.name.length < 5 || values.name.length > 20) {
+      errors.name = "Enter 5 to 20 characters";
       setStyle({ marginTop: "10px" });
     }
 
@@ -78,17 +78,17 @@ export default function StudentFormComponent(props) {
       values.birthDate == "" ||
       !moment(values.birthDate).isBefore()
     ) {
-      errors.birthDate = "Birth date does meet the minimum age requirement";
+      errors.birthDate = "Date should be in the past";
       setStyle({ marginTop: "10px" });
     }
 
     if (values.emailId == null || values.emailId == "") {
-      errors.emailId = "Provide an email id";
+      errors.emailId = "Provide a valid Email Id";
       setStyle({ marginTop: "10px" });
     }
 
-    if (values.address === undefined || values.address.length < 10) {
-      errors.address = "Provide a longer address";
+    if (values.address === undefined || values.address.length < 10 || values.address.length > 30) {
+      errors.address = "Provide an address within 10 to 30 characters";
       setStyle({ marginTop: "10px" });
     }
     return errors;

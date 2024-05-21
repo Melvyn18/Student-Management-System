@@ -1,16 +1,27 @@
 import { apiClient } from "./ApiClient"
 
-export const retrieveAllMarksApi = () => apiClient.get('list-marks');
+export const retrieveAllMarksApi = (token) => apiClient.get('list-marks',
+{
+    headers: {
+        'Authorization' : token
+    }
+}
+);
 
-export const deleteMarkApi = (id) => apiClient.delete(`delete-mark?id=${id}`);
+export const deleteMarkApi = (id, token) => apiClient.delete(`delete-mark?id=${id}`,
+{
+    headers: {
+        'Authorization' : token
+    }
+}
+);
 
-export const addMarkApi = (mark, studentId, courseId) => apiClient.post(`add-mark?studentId=${studentId}&courseId=${courseId}`, mark
-// {
-//     headers: {
-//         'Content-Type': 'application/json',
-//     }
-// }
-    
+export const addMarkApi = (mark, studentId, courseId, token) => apiClient.post(`add-mark?studentId=${studentId}&courseId=${courseId}`, mark,
+{
+    headers: {
+        'Authorization' : token
+    }
+}    
 );
 
 // export const retrieveRegistrationApi = (id) => apiClient.get(`retrieve-registration?id=${id}`);

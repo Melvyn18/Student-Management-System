@@ -3,6 +3,7 @@ import StudentFormComponent from "../StudentFormComponent/StudentFormComponent";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { retrieveStudentApi } from "../../../api/StudentApiService";
+import Cookies from "js-cookie";
 
 export default function AddStudentComponent() {
 
@@ -10,11 +11,13 @@ export default function AddStudentComponent() {
 
   const [student, setStudent] = useState({});
 
+  const token = Cookies.get('authorizationToken');
+
   useEffect(() => {
     async function fetchStudent(){
       console.log(id);
       if(id !== undefined){
-        const response = await retrieveStudentApi(id);
+        const response = await retrieveStudentApi(id, token);
       // console.log(response);
       setStudent(response.data);
       // console.log(student);

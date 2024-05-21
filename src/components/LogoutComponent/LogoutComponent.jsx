@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { setLoginStatus } from "../../slices/loginSlice";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
+import Cookies from "js-cookie";
 
 export default function LogoutComponent(){
 
@@ -10,7 +11,8 @@ export default function LogoutComponent(){
 
     useEffect(() => {
         function changeLoginStatus(){
-            dispatch(setLoginStatus(false));
+            // dispatch(setLoginStatus(false));
+            // Cookies.set('loggedIn', false);
         }
         changeLoginStatus();
     }, []);

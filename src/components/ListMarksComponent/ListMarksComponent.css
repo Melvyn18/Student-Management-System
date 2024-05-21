@@ -1,3 +1,5 @@
+
+
 .markData {
     /* display: grid; */
     display: flex;
@@ -12,16 +14,23 @@
     /* margin: 20px 20px; */
 }
 
-.addMarkButton{
+.addMarkButton, .statistics-button{
     font-family: inherit;
     background: #eee;
     border: none;
     border-radius: 5px;
     padding: 7px;
     box-shadow: 0 2px 5px #3F2305;
+    margin-bottom: 30px;
 }
 
-.addMarkButton * {
+.button-div{
+    display: flex;
+    gap: 230px;
+    justify-content: center;
+}
+
+.addMarkButton * , .statistics-button * {
     text-decoration: none;
     color: black;
 }

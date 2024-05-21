@@ -3,19 +3,18 @@ import { retrieveAllMarksApi } from "../../api/MarkApiService";
 import { Link } from "react-router-dom";
 import MarkComponent from "./MarkComponent/MarkComponent";
 import { useState, useEffect } from "react";
+import Cookies from "js-cookie";
 
 export default function ListMarksComponent(){
 
     const [markArray, setMarkArray] = useState([]);
 
-    const [isError, setError] = useState(false);
-
-    const [errorMessage, setErrorMessage] = useState("");
-
     useEffect(() => refreshMarks(), []);
 
+    const token = Cookies.get('authorizationToken');
+
     function refreshMarks(){
-        retrieveAllMarksApi()
+        retrieveAllMarksApi(token)
         .then(response => {
             setMarkArray(response.data)
         })
@@ -35,15 +34,19 @@ export default function ListMarksComponent(){
                 assessmentDate={mark.assessmentDate} 
                 score={mark.score} 
                 refreshMarks={refreshMarks}
-                setError={setError}
-                setErrorMessage={setErrorMessage}
                 />
                 })}
             </div>
-            {isError && <p className="error-message">{errorMessage}</p>}
+            <div className="button-div">
+                
             <button className="addMarkButton">
                 <Link to="/add-mark">Add Mark</Link>
             </button>
+            <button className="statistics-button">
+                <Link to="/statistics">Statistics</Link>
+            </button>
+            </div>
+            
         </div>
         
     )

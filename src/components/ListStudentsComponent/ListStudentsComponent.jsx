@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { retrieveAllStudentsApi } from "../../api/StudentApiService";
 import StudentComponent from "./StudentComponent/StudentComponent";
 import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
 
 export default function ListStudentsComponent(){
 
@@ -14,8 +15,10 @@ export default function ListStudentsComponent(){
 
     useEffect(() => refreshStudents(), []);
 
+    const token = Cookies.get('authorizationToken');
+
     function refreshStudents(){
-        retrieveAllStudentsApi()
+        retrieveAllStudentsApi(token)
         .then(response => {
             setStudentArray(response.data)
             console.log(studentArray);

@@ -1,0 +1,29 @@
+.marks-table{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 470px;
+    width: 600px;
+    border-radius: 15px;
+    box-shadow: 0 1px 5px rgb(138, 137, 137);
+    background-color: #FFFFFF;
+    margin: auto;
+    
+}
+
+.marks-table th {
+    height: 40px;
+}
+
+/* @media (min-width: 768px) and (max-width: 1200px){
+    .marks-table{
+        margin: auto;
+    }
+} */
+
+@media (min-width: 320px) and (max-width: 768px){
+    .marks-table{
+        width: 400px; 
+        font-size: 1rem;       
+    }
+}

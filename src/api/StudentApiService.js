@@ -1,12 +1,42 @@
 import { apiClient } from "./ApiClient"
 
-export const retrieveAllStudentsApi = () => apiClient.get('list-students');
+export const retrieveAllStudentsApi = (token) => apiClient.get('list-students',
+    {
+        headers: {
+            'Authorization' : token
+        }
+    }
+);
 
-export const deleteStudentApi = (id) => apiClient.delete(`delete-student?id=${id}`);
+export const deleteStudentApi = (id, token) => apiClient.delete(`delete-student?id=${id}`,
+    {
+        headers: {
+            'Authorization' : token
+        }
+    }
+);
 
-export const addStudentApi = (student) => apiClient.post(`add-student`, student);
+export const addStudentApi = (student, token) => apiClient.post(`add-student`, student,
+{
+    headers: {
+        'Authorization' : token
+    }
+}
+);
 
-export const retrieveStudentApi = (id) => apiClient.get(`retrieve-student?id=${id}`);
+export const retrieveStudentApi = (id, token) => apiClient.get(`retrieve-student?id=${id}`,
+{
+    headers: {
+        'Authorization' : token
+    }
+}
+);
 
-export const updateStudentApi = (student) => apiClient.put(`update-student`, student);
+export const updateStudentApi = (student, token) => apiClient.put(`update-student`, student,
+{
+    headers: {
+        'Authorization' : token
+    }
+}
+);
 

@@ -7,6 +7,7 @@ import { addRegistrationApi } from "../../../api/RegistrationApiService";
 import { useNavigate } from "react-router-dom";
 import StudentDropdownComponent from "./StudentDropdownComponent/StudentDropdownComponent";
 import CourseDropdownComponent from "./CourseDropdownComponent/CourseDropdownComponent";
+import Cookies from "js-cookie";
 
 export default function RegistrationFormComponent() {
   useEffect(() => refreshStudentsAndCourses(), []);
@@ -23,14 +24,16 @@ export default function RegistrationFormComponent() {
     marginTop: "20px",
   });
 
+  const token = Cookies.get('authorizationToken');
+
   function refreshStudentsAndCourses() {
-    retrieveAllCoursesApi()
+    retrieveAllCoursesApi(token)
       .then((response) => {
         setCourses(response.data);
       })
       .catch((error) => console.log(error));
 
-    retrieveAllStudentsApi()
+    retrieveAllStudentsApi(token)
       .then((response) => {
         setStudents(response.data);
       })
@@ -50,7 +53,7 @@ export default function RegistrationFormComponent() {
       course: {},
     };
 
-    addRegistrationApi(registration, studentId, courseId)
+    addRegistrationApi(registration, studentId, courseId, token)
       .then((response) => {
         console.log(response.status);
         if (response.status == 200) {
@@ -122,9 +125,9 @@ export default function RegistrationFormComponent() {
             />
           </fieldset>
 
-          <CourseDropdownComponent courses={courses} />
-
           <StudentDropdownComponent students={students} />
+
+          <CourseDropdownComponent courses={courses} />
 
           <input
             style={style}

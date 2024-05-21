@@ -7,6 +7,13 @@
     text-shadow: 1px 1px gray;
 }
 
+.login .error-message{
+    font-size: 0.9rem;
+    text-shadow: none;
+    position: initial;
+    color: red;
+}
+
 .login-image{
     object-fit: cover;
     height: 85vh;

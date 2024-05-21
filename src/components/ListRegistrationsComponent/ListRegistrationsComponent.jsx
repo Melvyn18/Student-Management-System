@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { retrieveAllRegistrationsApi } from "../../api/RegistrationApiService";
 import { Link } from "react-router-dom";
 import RegistrationComponent from "./RegistrationComponent/RegistrationComponent";
+import Cookies from "js-cookie";
 
 export default function ListRegistrationsComponent(){
 
@@ -14,8 +15,10 @@ export default function ListRegistrationsComponent(){
 
     useEffect(() => refreshRegistrations(), []);
 
+    const token = Cookies.get('authorizationToken');
+
     function refreshRegistrations(){
-        retrieveAllRegistrationsApi()
+        retrieveAllRegistrationsApi(token)
         .then(response => {
             setRegistrationArray(response.data)
         })

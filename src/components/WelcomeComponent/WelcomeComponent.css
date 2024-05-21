@@ -1,3 +1,22 @@
 body{
     background: #F4EAE0;
+    background-image: url("https://www.transparenttextures.com/patterns/axiom-pattern.png");
+
+}
+
+.dash-container{
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    gap: 25px;
+    margin: 50px;
+}
+
+
+@media (min-width: 320px) and (max-width: 768px){
+
+    .dash-container {
+        flex-direction: column;
+    }
+
 }

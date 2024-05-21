@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import StudentDropdownComponent from "../../ListRegistrationsComponent/RegistrationFormComponent/StudentDropdownComponent/StudentDropdownComponent";
 import CourseDropdownComponent from "../../ListRegistrationsComponent/RegistrationFormComponent/CourseDropdownComponent/CourseDropdownComponent";
 import AssessmentTypeComponent from "./AssessmentTypeComponent/AssessmentTypeComponent";
+import Cookies from "js-cookie";
 
 export default function MarkFormComponent() {
   useEffect(() => refreshStudentsAndCourses(), []);
@@ -26,14 +27,16 @@ export default function MarkFormComponent() {
     marginTop: "20px",
   });
 
+  const token = Cookies.get('authorizationToken');
+
   function refreshStudentsAndCourses() {
-    retrieveAllCoursesApi()
+    retrieveAllCoursesApi(token)
       .then((response) => {
         setCourses(response.data);
       })
       .catch((error) => console.log(error));
 
-    retrieveAllStudentsApi()
+    retrieveAllStudentsApi(token)
       .then((response) => {
         setStudents(response.data);
       })
@@ -58,7 +61,7 @@ export default function MarkFormComponent() {
     console.log(courseId);
     console.log(mark);
 
-    addMarkApi(mark, studentId, courseId)
+    addMarkApi(mark, studentId, courseId, token)
       .then((response) => {
         console.log(response.status);
         if (response.status == 200) {
@@ -107,7 +110,7 @@ export default function MarkFormComponent() {
       setStyle({ marginTop: "10px" });
     }
 
-    if(values.score == "" || values.score < 0){
+    if(values.score == "" || values.score < 0 || values.score > 100){
       errors.score = "Provide a valid score";
       setStyle({ marginTop: "10px" });
     }

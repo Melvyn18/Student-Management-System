@@ -8,6 +8,10 @@
     justify-content: space-around;
 }
 
+.header-component *{
+    text-decoration: none;
+}
+
 .logged-header-component{
     height: auto; 
     background: #FAF6F0;
@@ -15,6 +19,10 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
+}
+
+.logged-header-component *{
+    text-decoration: none;
 }
 
 .profile{
@@ -40,6 +48,7 @@ header h1{
 .logout{
     font-size: 0.8rem;
     padding: 5px;
+    border: none;
     box-shadow: 0 1px 5px rgb(138, 137, 137);
     border-radius: 5px;
     background: #eee;
@@ -51,11 +60,11 @@ header h1{
     color: black;
 }
 
-/* @media (min-width: 768px) and (max-width: 1200px){
-    .header-component{
-        width: 100%;
+@media (min-width: 768px) and (max-width: 1200px){
+    header h1{
+        font-size: 1.5rem;
     }
-} */
+}
 
 @media (min-width: 320px) and (max-width: 768px){
 

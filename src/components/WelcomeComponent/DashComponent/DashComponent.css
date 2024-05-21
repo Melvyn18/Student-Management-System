@@ -1,0 +1,20 @@
+.dash-component{
+    height: 200px;
+    width: 200px;
+    background: red;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #F2EAD3;
+    border-radius: 30px;
+    box-shadow: 0 2px 5px #3F2305;
+    color: #65451F;
+}
+
+.dash-message{
+    font-size: 1.2rem;
+}
+
+.dash-count{
+    font-size: 2rem;
+}

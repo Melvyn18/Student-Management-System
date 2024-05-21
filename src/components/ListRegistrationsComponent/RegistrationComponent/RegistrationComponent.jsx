@@ -3,14 +3,17 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import UpdateIcon from "@mui/icons-material/Update"
 import { useNavigate } from "react-router-dom";
 import { deleteRegistrationApi } from "../../../api/RegistrationApiService";
+import Cookies from "js-cookie";
 
 export default function RegistrationComponent(props) {
 
   // const navigate = useNavigate();
 
+  const token = Cookies.get('authorizationToken');
+
   function handleDelete(id){
     console.log("Registration Id is: " + id);
-    deleteRegistrationApi(id)
+    deleteRegistrationApi(id, token)
     .then(respose => {
       props.refreshRegistrations()
     })

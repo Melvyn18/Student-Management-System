@@ -3,14 +3,16 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import UpdateIcon from "@mui/icons-material/Update"
 import { useNavigate } from "react-router-dom";
 import { deleteMarkApi } from "../../../api/MarkApiService";
+import Cookies from "js-cookie";
 
 export default function MarkComponent(props) {
 
   // const navigate = useNavigate();
+  const token = Cookies.get('authorizationToken');
 
   function handleDelete(id){
-    console.log("Mark Id is: " + id);
-    deleteMarkApi(id)
+    console.log("Mark Id is: " + id, "deleted Id");
+    deleteMarkApi(id, token)
     .then(respose => {
       props.refreshMarks()
     })
