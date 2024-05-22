@@ -13,6 +13,8 @@ export default function StudentFormComponent(props) {
 
     const [isError, setError] = useState(false);
 
+    const [errorMessage, setErrorMessage] = useState("");
+
     const token = Cookies.get('authorizationToken');
 
   const [style, setStyle] = useState({
@@ -39,7 +41,17 @@ export default function StudentFormComponent(props) {
       .then(response => {
         navigate('/students');
       })
-      .catch(error => console.log(error))
+      .catch(error => {
+        console.log(error.response.status)
+        if(error.response.status == 400){
+          setError(true);
+          setErrorMessage("Repitition of Email Id is not allowed!");
+        }
+        else if(error.response.status == 422){
+          setError(true);
+          setErrorMessage("Please enter again with appropriate data!");
+        }
+      })
 
       return;
     }
@@ -47,8 +59,8 @@ export default function StudentFormComponent(props) {
     console.log("Undefined");
 
     addStudentApi(student, token)
-      .then((respone) => {
-        if(respone.status == 200){
+      .then((response) => {
+        if(response.status == 201){
             navigate('/students');
         }
         else{
@@ -56,8 +68,16 @@ export default function StudentFormComponent(props) {
         }
         })
       .catch((error) => {
-        console.log(error)
-        setError(true);
+        console.log(error.response.status)
+        if(error.response.status == 409){
+          setError(true);
+          setErrorMessage("Repitition of Email Id is not allowed!");
+        }
+        else if(error.response.status == 422){
+          setError(true);
+          setErrorMessage("Please enter again with appropriate data!");
+        }
+        
       });
   }
 
@@ -169,7 +189,7 @@ export default function StudentFormComponent(props) {
             type="submit"
             value="Submit"
           />
-          {isError && <p className="error-message error-paragraph">Repitition of Email Id is not allowed!</p>}
+          {isError && <p className="error-message error-paragraph">{errorMessage}</p>}
         </Form>
       </Formik>
     </div>

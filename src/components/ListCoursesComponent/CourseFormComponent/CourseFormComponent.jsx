@@ -12,6 +12,8 @@ export default function CourseFormComponent(props) {
 
     const [isError, setError] = useState(false);
 
+    const [errorMessage, setErrorMessage] = useState("");
+
     const token = Cookies.get('authorizationToken');
 
   const [style, setStyle] = useState({
@@ -38,17 +40,27 @@ export default function CourseFormComponent(props) {
         console.log(response)
         navigate('/courses');
       })
-      .catch(error => console.log(error))
+      .catch(error => {
+        console.log(error.response.status)
+        if(error.response.status == 400){
+          setError(true);
+          setErrorMessage("Course already present!");
+        }
+        else if(error.response.status == 422){
+          setError(true);
+          setErrorMessage("Please enter again with appropriate data!");
+        }
+      })
 
       return;
     }
 
     console.log("Undefined");
 
-    addCourseApi(course)
-      .then((respone) => {
-        console.log(respone.status)
-        if(respone.status == 200){
+    addCourseApi(course, token)
+      .then((response) => {
+        console.log(response.status)
+        if(response.status == 201){
             navigate('/courses');
         }
         else{
@@ -56,12 +68,20 @@ export default function CourseFormComponent(props) {
         }
         })
       .catch((error) => {
-        console.log(error)
-        setError(true);
+        console.log(error.response.status)
+        if(error.response.status == 409){
+          setError(true);
+          setErrorMessage("Course already present!");
+        }
+        else if(error.response.status == 422){
+          setError(true);
+          setErrorMessage("Please enter again with appropriate data!");
+        }
       });
   }
 
   function validate(values) {
+    setError(false);
     // let date = new Date();
     // date.setFullYear(date.getFullYear() - 10);
 
@@ -72,7 +92,7 @@ export default function CourseFormComponent(props) {
       setStyle({ marginTop: "10px" });
     }
 
-    if (values.courseDescription == undefined || values.courseDescription.length < 5 || values.courseDescription.length > 30
+    if (values.courseDescription == undefined || values.courseDescription.length < 10 || values.courseDescription.length > 30
     ) {
       errors.courseDescription = "Description should be b/w 10 to 30 characters";
       setStyle({ marginTop: "10px" });
@@ -150,7 +170,7 @@ export default function CourseFormComponent(props) {
             type="submit"
             value="Submit"
           />
-          {isError && <p className="error-message error-paragraph">Course already present!</p>}
+          {isError && <p className="error-message error-paragraph">{errorMessage}</p>}
         </Form>
       </Formik>
     </div>

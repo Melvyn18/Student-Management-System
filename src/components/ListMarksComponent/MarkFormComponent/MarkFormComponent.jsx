@@ -64,9 +64,9 @@ export default function MarkFormComponent() {
     addMarkApi(mark, studentId, courseId, token)
       .then((response) => {
         console.log(response.status);
-        if (response.status == 200) {
+        if (response.status == 201) {
           navigate("/marks");
-          console.log("inside 200");
+          console.log("inside 201");
         } else {
           setError(true);
           console.log("inside else");
@@ -76,17 +76,18 @@ export default function MarkFormComponent() {
         console.log(error.response.status);
         console.log("inside catch");
         if(error.response.status == 404){
-          console.log("bad req", "bad req");
           setError(true);
           setErrorMessage("Student not registered for the course!");
         }
-        else  if(error.response.status == 400){
-          console.log("other req", "other req");
+        else  if(error.response.status == 409){
           setError(true)
           setErrorMessage("Record already present!");
         }
-        
-        setError(true);
+        else if(error.response.status == 400){
+          setError(true);
+          setErrorMessage("Please enter again with appropriate data!");
+        }
+
       });
   }
 

@@ -63,7 +63,7 @@ export default function LoginComponent(){
                     }}>
                     <fieldset>
                         <label htmlFor="name">Name:</label>
-                        <input onChange={(event) => dispatch(change(event.target.value))} type="text" name="name" placeholder="Enter name..." value={username}/>
+                        <input onChange={event => dispatch(change(event.target.value))} type="text" name="name" placeholder="Enter name..." value={username}/>
 
                         <label htmlFor="password">Password:</label>
                         <input onChange={event => setPassword(event.target.value)} type="password" name="password" placeholder="Provide password..." value={password}/>
