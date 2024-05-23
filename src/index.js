@@ -7,13 +7,17 @@ import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import loginReducer from '../src/slices/loginSlice.js';
 import userReducer from '../src/slices/userSlice.js';
+import popupReducer from '../src/slices/popupSlice.js';
+import deletedStudentReducer from './slices/deletedStudentSlice.js';
 // import { CookiesProvider } from 'react-cookie';
 // import { useCookies } from "react-cookie";
 
 const store = configureStore({
   reducer: {
     isLoggedIn: loginReducer,
-    username: userReducer
+    username: userReducer,
+    popup: popupReducer,
+    deletedStudent: deletedStudentReducer
   }
 })
 

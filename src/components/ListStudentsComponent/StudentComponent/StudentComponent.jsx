@@ -1,4 +1,8 @@
 import "./StudentComponent.css";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { setPopup } from "../../../slices/popupSlice";
+import { setDeletedStudent } from "../../../slices/deletedStudentSlice";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteStudentApi } from "../../../api/StudentApiService";
 import UpdateIcon from "@mui/icons-material/Update"
@@ -11,13 +15,24 @@ export default function StudentComponent(props) {
 
   const token = Cookies.get('authorizationToken');
 
+  let popup = useSelector((state) => state.popup.value);
+
+  let deletedStudent = useSelector((state) => state.deletedStudent.value);
+
+  let dispatch = useDispatch();
+
+  console.log(popup, "popup");
+
   function handleDelete(id){
     console.log("Id is: " + id);
     deleteStudentApi(id, token)
     .then(respose => {
-      console.log(respose)
+      // console.log(respose)
       props.setError(false)
       props.setErrorMessage("")
+
+      dispatch(setDeletedStudent(props.studentId));
+      dispatch(setPopup(true));
       props.refreshStudents()
     })
     .catch(error => {
@@ -27,7 +42,7 @@ export default function StudentComponent(props) {
     })
   }
 
-  function handleUpdate(id, token){
+  function handleUpdate(id){
     navigate(`/update-student/${id}`);
   }
 

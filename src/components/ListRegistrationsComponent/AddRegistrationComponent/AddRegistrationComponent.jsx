@@ -1,36 +1,21 @@
 import "./AddRegistrationComponent.css";
 import RegistrationFormComponent from "../RegistrationFormComponent/RegistrationFormComponent";
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { retrieveRegistrationApi } from "../../../api/RegistrationApiService";
+import { useSelector } from "react-redux";
 
 export default function AddRegistrationComponent() {
 
-  // const {id} = useParams();
-
-  // const [registration, setRegistration] = useState({});
-
-  // useEffect(() => {
-  //   async function fetchRegistration(){
-  //     console.log(id);
-  //     if(id !== undefined){
-  //       const response = await retrieveRegistrationApi(id);
-  //     // console.log(response);
-  //     setRegistration(response.data);
-  //     // console.log(student);
-  //     }
-      
-  //   };
-  //   fetchRegistration()
-    
-  // }, []);
-
-  
+  let popup = useSelector((state) => state.popup.value);
 
   return (
-    <div className="add-registration-component">
+    <div>
+        <div 
+        style={{ filter: popup ? "blur(5px)" : "none" }}
+        className="add-registration-component">
       <h2>Enter Registration Data</h2>
-      <RegistrationFormComponent/>
+      
     </div>
+    <RegistrationFormComponent/>
+    </div>
+    
   );
 }

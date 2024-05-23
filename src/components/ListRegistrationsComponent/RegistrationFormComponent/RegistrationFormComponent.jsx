@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import "./RegistrationFormComponent.css";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { setPopup } from "../../../slices/popupSlice";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { retrieveAllCoursesApi } from "../../../api/CourseApiService";
 import { retrieveAllStudentsApi } from "../../../api/StudentApiService";
@@ -8,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import StudentDropdownComponent from "./StudentDropdownComponent/StudentDropdownComponent";
 import CourseDropdownComponent from "./CourseDropdownComponent/CourseDropdownComponent";
 import Cookies from "js-cookie";
+import PopupComponent from "../../PopupComponent/PopupComponent";
 
 export default function RegistrationFormComponent() {
   useEffect(() => refreshStudentsAndCourses(), []);
@@ -20,11 +24,21 @@ export default function RegistrationFormComponent() {
 
   const [students, setStudents] = useState([]);
 
+  const [courseId, setCourseId] = useState("");
+
+  const [studentId, setStudentId] = useState("");
+
   const [style, setStyle] = useState({
     marginTop: "20px",
   });
 
-  const token = Cookies.get('authorizationToken');
+  const token = Cookies.get("authorizationToken");
+
+  let popup = useSelector((state) => state.popup.value);
+
+  let dispatch = useDispatch();
+
+  console.log(popup, "popup");
 
   function refreshStudentsAndCourses() {
     retrieveAllCoursesApi(token)
@@ -38,6 +52,11 @@ export default function RegistrationFormComponent() {
         setStudents(response.data);
       })
       .catch((error) => console.log(error));
+  }
+
+  function closePopup() {
+    dispatch(setPopup(false));
+    navigate("/registrations");
   }
 
   function onSubmit(values) {
@@ -56,9 +75,11 @@ export default function RegistrationFormComponent() {
     addRegistrationApi(registration, studentId, courseId, token)
       .then((response) => {
         console.log(response.status);
-        if (response.status == 200) {
-          navigate("/registrations");
-          console.log("inside 200");
+        if (response.status == 201) {
+          setStudentId(studentId);
+          setCourseId(courseId);
+          dispatch(setPopup(true));
+          // navigate("/registrations");
         } else {
           setError(true);
           console.log("inside else");
@@ -72,7 +93,7 @@ export default function RegistrationFormComponent() {
   }
 
   function validate(values) {
-    setError(false)
+    setError(false);
 
     let errors = {};
 
@@ -95,53 +116,66 @@ export default function RegistrationFormComponent() {
   }
 
   return (
-    <div className="registration-form">
-      <Formik
-        initialValues={{
-          registrationId: null,
-          registrationDate: "",
-          courseId: "",
-          studentId: "",
-        }}
-        validate={validate}
-        validateOnChange={false}
-        validateOnBlur={false}
-        onSubmit={onSubmit}
-        enableReinitialize={true}
+    <div>
+      <div
+        style={{ filter: popup ? "blur(5px)" : "none" }}
+        className="registration-form"
       >
-        <Form>
-          <fieldset>
-            <label htmlFor="registrationDate">Registration Date:</label>
-            <Field
-              type="date"
-              name="registrationDate"
-              placeholder="Provide registration date..."
+        <Formik
+          initialValues={{
+            registrationId: null,
+            registrationDate: "",
+            courseId: "",
+            studentId: "",
+          }}
+          validate={validate}
+          validateOnChange={false}
+          validateOnBlur={false}
+          onSubmit={onSubmit}
+          enableReinitialize={true}
+        >
+          <Form>
+            <fieldset>
+              <label htmlFor="registrationDate">Registration Date:</label>
+              <Field
+                type="date"
+                name="registrationDate"
+                placeholder="Provide registration date..."
+              />
+              <ErrorMessage
+                name="registrationDate"
+                render={(errorMessage) => (
+                  <div className="error-message">{errorMessage}</div>
+                )}
+              />
+            </fieldset>
+
+            <StudentDropdownComponent students={students} />
+
+            <CourseDropdownComponent courses={courses} />
+
+            <input
+              disabled={popup}
+              style={style}
+              className="registration-submit"
+              type="submit"
+              value="Submit"
             />
-            <ErrorMessage
-              name="registrationDate"
-              render={(errorMessage) => (
-                <div className="error-message">{errorMessage}</div>
-              )}
-            />
-          </fieldset>
+            {isError && (
+              <p className="error-message error-paragraph">
+                Student already registered!
+              </p>
+            )}
+          </Form>
+        </Formik>
+      </div>
 
-          <StudentDropdownComponent students={students} />
-
-          <CourseDropdownComponent courses={courses} />
-
-          <input
-            style={style}
-            className="registration-submit"
-            type="submit"
-            value="Submit"
-          />
-          {isError && (
-            <p className="error-message error-paragraph">
-              Student already registered!
-            </p>
-          )}
-        </Form>
-      </Formik>
+      <PopupComponent
+        trigger={popup}
+        heading={"Registration done !"}
+        message={`Successfully registered Course(${courseId}) for Student(${studentId}) !`}
+        closePopup={closePopup}
+      />
     </div>
   );
 }

@@ -5,11 +5,11 @@
     width: 330px;
     padding: 10px 30px 30px 30px;
     border-radius: 15px;
-    position: absolute;
+    /* position: absolute;
     left: 0;
     right: 0;
-    top: 150px;
-    margin: 0 auto 0 auto;
+    top: 150px; */
+    margin: 20px auto 0 auto;
 }
 
 .course-form label{

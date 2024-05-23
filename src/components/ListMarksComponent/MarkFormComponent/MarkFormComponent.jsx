@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import "./MarkFormComponent.css";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { setPopup } from "../../../slices/popupSlice";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { retrieveAllCoursesApi } from "../../../api/CourseApiService";
 import { retrieveAllStudentsApi } from "../../../api/StudentApiService";
@@ -9,6 +12,7 @@ import StudentDropdownComponent from "../../ListRegistrationsComponent/Registrat
 import CourseDropdownComponent from "../../ListRegistrationsComponent/RegistrationFormComponent/CourseDropdownComponent/CourseDropdownComponent";
 import AssessmentTypeComponent from "./AssessmentTypeComponent/AssessmentTypeComponent";
 import Cookies from "js-cookie";
+import PopupComponent from "../../PopupComponent/PopupComponent";
 
 export default function MarkFormComponent() {
   useEffect(() => refreshStudentsAndCourses(), []);
@@ -23,11 +27,21 @@ export default function MarkFormComponent() {
 
   const [students, setStudents] = useState([]);
 
+  const [courseId, setCourseId] = useState("");
+
+  const [studentId, setStudentId] = useState("");
+
   const [style, setStyle] = useState({
     marginTop: "20px",
   });
 
-  const token = Cookies.get('authorizationToken');
+  const token = Cookies.get("authorizationToken");
+
+  let popup = useSelector((state) => state.popup.value);
+
+  let dispatch = useDispatch();
+
+  console.log(popup, "popup");
 
   function refreshStudentsAndCourses() {
     retrieveAllCoursesApi(token)
@@ -43,6 +57,11 @@ export default function MarkFormComponent() {
       .catch((error) => console.log(error));
   }
 
+  function closePopup() {
+    dispatch(setPopup(false));
+    navigate("/marks");
+  }
+
   function onSubmit(values) {
     console.log(values);
 
@@ -54,7 +73,7 @@ export default function MarkFormComponent() {
       assessmentDate: values.assessmentDate,
       student: {},
       course: {},
-      score: values.score
+      score: values.score,
     };
 
     console.log(studentId);
@@ -65,8 +84,10 @@ export default function MarkFormComponent() {
       .then((response) => {
         console.log(response.status);
         if (response.status == 201) {
-          navigate("/marks");
-          console.log("inside 201");
+          setStudentId(studentId);
+          setCourseId(courseId);
+          dispatch(setPopup(true));
+          // navigate("/marks");
         } else {
           setError(true);
           console.log("inside else");
@@ -75,24 +96,21 @@ export default function MarkFormComponent() {
       .catch((error) => {
         console.log(error.response.status);
         console.log("inside catch");
-        if(error.response.status == 404){
+        if (error.response.status == 404) {
           setError(true);
           setErrorMessage("Student not registered for the course!");
-        }
-        else  if(error.response.status == 409){
-          setError(true)
+        } else if (error.response.status == 409) {
+          setError(true);
           setErrorMessage("Record already present!");
-        }
-        else if(error.response.status == 400){
+        } else if (error.response.status == 400) {
           setError(true);
           setErrorMessage("Please enter again with appropriate data!");
         }
-
       });
   }
 
   function validate(values) {
-    setError(false)
+    setError(false);
 
     let errors = {};
 
@@ -111,7 +129,7 @@ export default function MarkFormComponent() {
       setStyle({ marginTop: "10px" });
     }
 
-    if(values.score == "" || values.score < 0 || values.score > 100){
+    if (values.score == "" || values.score < 0 || values.score > 100) {
       errors.score = "Provide a valid score";
       setStyle({ marginTop: "10px" });
     }
@@ -125,67 +143,82 @@ export default function MarkFormComponent() {
   }
 
   return (
-    <div className="mark-form">
-      <Formik
-        initialValues={{
-          studentId: "",
-          courseId: "",
-          assessmentType : "",
-          assessmentDate : null,
-          score: ""
-        }}
-        validate={validate}
-        validateOnChange={false}
-        validateOnBlur={false}
-        onSubmit={onSubmit}
-        enableReinitialize={true}
+    <div>
+      <div
+        style={{ filter: popup ? "blur(5px)" : "none" }}
+        className="mark-form"
       >
-        <Form>
-          <StudentDropdownComponent students={students} />
+        <Formik
+          initialValues={{
+            studentId: "",
+            courseId: "",
+            assessmentType: "",
+            assessmentDate: null,
+            score: "",
+          }}
+          validate={validate}
+          validateOnChange={false}
+          validateOnBlur={false}
+          onSubmit={onSubmit}
+          enableReinitialize={true}
+        >
+          <Form>
+            <StudentDropdownComponent students={students} />
 
-          <CourseDropdownComponent courses={courses} />
+            <CourseDropdownComponent courses={courses} />
 
-          <AssessmentTypeComponent />
+            <AssessmentTypeComponent />
 
-          <fieldset>
-            <label htmlFor="assessmentDate">Assessment Date:</label>
-            <Field
-              type="date"
-              name="assessmentDate"
-              placeholder="Provide assessmentDate date..."
+            <fieldset>
+              <label htmlFor="assessmentDate">Assessment Date:</label>
+              <Field
+                type="date"
+                name="assessmentDate"
+                placeholder="Provide assessmentDate date..."
+              />
+              <ErrorMessage
+                name="assessmentDate"
+                render={(errorMessage) => (
+                  <div className="error-message">{errorMessage}</div>
+                )}
+              />
+            </fieldset>
+
+            <fieldset>
+              <label htmlFor="score">Score:</label>
+              <Field
+                type="number"
+                name="score"
+                placeholder="Provide score..."
+              />
+              <ErrorMessage
+                name="score"
+                render={(errorMessage) => (
+                  <div className="error-message">{errorMessage}</div>
+                )}
+              />
+            </fieldset>
+
+            <input
+              disabled={popup}
+              style={style}
+              className="mark-submit"
+              type="submit"
+              value="Submit"
             />
-            <ErrorMessage
-              name="assessmentDate"
-              render={(errorMessage) => (
-                <div className="error-message">{errorMessage}</div>
-              )}
-            />
-          </fieldset>
+            {isError && (
+              <p className="error-message error-paragraph">{errorMessage}</p>
+            )}
+          </Form>
+        </Formik>
+      </div>
 
-          <fieldset>
-            <label htmlFor="score">Score:</label>
-            <Field type="number" name="score" placeholder="Provide score..." />
-            <ErrorMessage
-              name="score"
-              render={(errorMessage) => (
-                <div className="error-message">{errorMessage}</div>
-              )}
-            />
-          </fieldset>
-
-          <input
-            style={style}
-            className="mark-submit"
-            type="submit"
-            value="Submit"
-          />
-          {isError && (
-            <p className="error-message error-paragraph">
-              {errorMessage}
-            </p>
-          )}
-        </Form>
-      </Formik>
+      <PopupComponent
+        trigger={popup}
+        heading={"Mark added !"}
+        message={`Added mark for Student(${studentId}) on Course(${courseId}) !`}
+        closePopup={closePopup}
+      />
     </div>
   );
 }
