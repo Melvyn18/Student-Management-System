@@ -12,8 +12,10 @@ import Cookies from "js-cookie";
 import PopupComponent from "../../PopupComponent/PopupComponent";
 
 export default function StudentFormComponent(props) {
-  
+
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   const [isError, setError] = useState(false);
 
@@ -23,17 +25,13 @@ export default function StudentFormComponent(props) {
 
   const [operation, setOperation] = useState("");
 
-  const token = Cookies.get("authorizationToken");
-
-  let popup = useSelector((state) => state.popup.value);
-
-  let dispatch = useDispatch();
-
-  console.log(popup, "popup");
-
   const [style, setStyle] = useState({
     marginTop: "20px",
   });
+
+  const popup = useSelector((state) => state.popup.value);
+
+  const token = Cookies.get("authorizationToken");
 
   function closePopup() {
     dispatch(setPopup(false));
@@ -41,6 +39,7 @@ export default function StudentFormComponent(props) {
   }
 
   function onSubmit(values) {
+
     const student = {
       studentId: props.student.studentId,
       name: values.name,
@@ -50,17 +49,15 @@ export default function StudentFormComponent(props) {
     };
 
     if (values.studentId !== undefined) {
-      console.log(values.studentId);
 
       updateStudentApi(student, token)
-        .then((response) => {
+        .then(() => {
           setOperation("updated");
           setStudentName(values.name);
           dispatch(setPopup(true));
-          // navigate('/students');
         })
         .catch((error) => {
-          console.log(error.response.status);
+          console.log(error.response.status, "error response status");
           if (error.response.status == 400) {
             setError(true);
             setErrorMessage("Repitition of Email Id is not allowed!");
@@ -79,13 +76,12 @@ export default function StudentFormComponent(props) {
           setOperation("added");
           setStudentName(values.name);
           dispatch(setPopup(true));
-          // navigate('/students');
         } else {
           setError(true);
         }
       })
       .catch((error) => {
-        console.log(error.response.status);
+        console.log(error.response.status, "error response status");
         if (error.response.status == 409) {
           setError(true);
           setErrorMessage("Repitition of Email Id is not allowed!");
@@ -144,7 +140,6 @@ export default function StudentFormComponent(props) {
 
   return (
     <div>
-
       <div
         style={{ filter: popup ? "blur(5px)" : "none" }}
         className="student-form"
@@ -241,7 +236,6 @@ export default function StudentFormComponent(props) {
         message={`Successfully ${operation} Student ${studentName} !`}
         closePopup={closePopup}
       />
-
     </div>
   );
 }

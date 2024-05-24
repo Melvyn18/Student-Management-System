@@ -3,7 +3,8 @@ import MarkFormComponent from "../MarkFormComponent/MarkFormComponent";
 import { useSelector } from "react-redux";
 
 export default function AddMarkComponent() {
-  let popup = useSelector((state) => state.popup.value);
+  
+  const popup = useSelector((state) => state.popup.value);
 
   return (
     <div>

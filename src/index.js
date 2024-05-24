@@ -9,6 +9,9 @@ import loginReducer from '../src/slices/loginSlice.js';
 import userReducer from '../src/slices/userSlice.js';
 import popupReducer from '../src/slices/popupSlice.js';
 import deletedStudentReducer from './slices/deletedStudentSlice.js';
+import deletedCourseReducer from './slices/deletedCourseSlice.js';
+import deletedRegistrationReducer from './slices/deletedRegistrationSlice.js';
+import deletedMarkReducer from './slices/deletedMarkSlice.js';
 // import { CookiesProvider } from 'react-cookie';
 // import { useCookies } from "react-cookie";
 
@@ -17,21 +20,20 @@ const store = configureStore({
     isLoggedIn: loginReducer,
     username: userReducer,
     popup: popupReducer,
-    deletedStudent: deletedStudentReducer
+    deletedStudent: deletedStudentReducer,
+    deletedCourse: deletedCourseReducer,
+    deletedRegistration: deletedRegistrationReducer,
+    deletedMark: deletedMarkReducer,
   }
 })
-
-// const [cookies, setCookie, removeCookie] = useCookies(['user']);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    {/* <CookiesProvider> */}
+    
       <Provider store={store}>
         <App/>
-      </Provider>
-    {/* </CookiesProvider> */}
-    
+      </Provider>    
     
   </React.StrictMode>
 );

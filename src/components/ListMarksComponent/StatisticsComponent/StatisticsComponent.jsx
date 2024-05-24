@@ -11,9 +11,6 @@ import MarkTableComponent from "./MarkTableComponent/MarkTableComponent";
 import Cookies from "js-cookie";
 
 export default function StatisticsComponent() {
-  useEffect(() => refreshData(), []);
-
-  const navigate = useNavigate();
 
   const [isError, setError] = useState(false);
 
@@ -39,14 +36,16 @@ export default function StatisticsComponent() {
     marginTop: "20px",
   });
 
-  const token = Cookies.get('authorizationToken');
+  const token = Cookies.get("authorizationToken");
+
+  useEffect(() => refreshData(), []);
 
   function refreshData() {
     retrieveAllCoursesApi(token)
       .then((response) => {
         setCourses(response.data);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log(error, "error-refreshData"));
 
     retrieveAllStudentsApi(token)
       .then((response) => {
@@ -58,17 +57,13 @@ export default function StatisticsComponent() {
       .then((response) => {
         setMarks(response.data);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log(error, "error-refreshData"));
   }
 
   function onSubmit(values) {
+
     const studentId = parseInt(values.studentId);
     const courseId = parseInt(values.courseId);
-
-    // const studentMarks = marks.filter(mark =>
-    //     mark.student.studentId === studentId &&
-    //     mark.course.courseid === courseId
-    // );
 
     const studentMarks = [];
 
@@ -83,10 +78,6 @@ export default function StatisticsComponent() {
 
     setStudentFilteredMarks(studentMarks);
 
-    console.log(studentFilteredMarks);
-
-    console.log(studentMarks, "studentMarks");
-
     const studentscores = studentMarks.map((mark) => mark.score);
 
     try {
@@ -95,16 +86,14 @@ export default function StatisticsComponent() {
 
       if (fieldValue == "Maximum") {
         setMaxValue(Math.max(...studentscores));
-        console.log(maxValue, "maximum");
       } 
       else if (fieldValue == "Average") {
         setAvgValue(total / length);
-        console.log(avgValue, "average");
       }
 
       setCalculationError(false);
-    } catch {
-      console.log("Error");
+    } 
+    catch {
       setCalculationError(true);
       setError(true);
       setErrorMessage("Student has not written any tests in this course!");
@@ -172,15 +161,14 @@ export default function StatisticsComponent() {
         </Form>
       </Formik>
 
-      <MarkTableComponent 
-      fieldValue={fieldValue}
-      isError={isError}
-      isCalculationError={isCalculationError}
-      maxValue={maxValue}
-      avgValue={avgValue}
-      studentFilteredMarks={studentFilteredMarks}
+      <MarkTableComponent
+        fieldValue={fieldValue}
+        isError={isError}
+        isCalculationError={isCalculationError}
+        maxValue={maxValue}
+        avgValue={avgValue}
+        studentFilteredMarks={studentFilteredMarks}
       />
-
     </div>
   );
 }

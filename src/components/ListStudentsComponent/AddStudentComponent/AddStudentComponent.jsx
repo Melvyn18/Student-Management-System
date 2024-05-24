@@ -8,37 +8,33 @@ import Cookies from "js-cookie";
 
 export default function AddStudentComponent() {
 
-  const {id} = useParams();
+  const { id } = useParams();
 
   const [student, setStudent] = useState({});
 
-  let popup = useSelector(state => state.popup.value);
+  const popup = useSelector((state) => state.popup.value);
 
-  const token = Cookies.get('authorizationToken');
+  const token = Cookies.get("authorizationToken");
 
   useEffect(() => {
-    async function fetchStudent(){
-      console.log(id);
-      if(id !== undefined){
+    async function fetchStudent() {
+      if (id !== undefined) {
         const response = await retrieveStudentApi(id, token);
-      setStudent(response.data);
+        setStudent(response.data);
       }
-      
-    };
-    fetchStudent()
-    
+    }
+    fetchStudent();
   }, []);
-
-  
 
   return (
     <div>
-      <div style={{filter: popup ? "blur(5px)" : "none"}} className="add-student-component">
-      <h2>Enter Student Data</h2>
-      
+      <div
+        style={{ filter: popup ? "blur(5px)" : "none" }}
+        className="add-student-component"
+      >
+        <h2>Enter Student Data</h2>
+      </div>
+      <StudentFormComponent student={student} />
     </div>
-    <StudentFormComponent student={student}/>
-    </div>
-    
   );
 }

@@ -7,22 +7,20 @@ import { retrieveCourseApi } from "../../../api/CourseApiService";
 import Cookies from "js-cookie";
 
 export default function AddCourseComponent() {
+
   const { id } = useParams();
 
   const [course, setCourse] = useState({});
 
-  let popup = useSelector((state) => state.popup.value);
+  const popup = useSelector((state) => state.popup.value);
 
   const token = Cookies.get("authorizationToken");
 
   useEffect(() => {
     async function fetchCourse() {
-      console.log(id);
       if (id !== undefined) {
         const response = await retrieveCourseApi(id, token);
-        // console.log(response);
         setCourse(response.data);
-        // console.log(student);
       }
     }
     fetchCourse();
@@ -36,6 +34,7 @@ export default function AddCourseComponent() {
       >
         <h2>Enter Course Data</h2>
       </div>
+
       <CourseFormComponent course={course} />
     </div>
   );

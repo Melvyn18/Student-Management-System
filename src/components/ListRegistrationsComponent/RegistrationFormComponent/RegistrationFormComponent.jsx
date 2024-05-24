@@ -14,9 +14,10 @@ import Cookies from "js-cookie";
 import PopupComponent from "../../PopupComponent/PopupComponent";
 
 export default function RegistrationFormComponent() {
-  useEffect(() => refreshStudentsAndCourses(), []);
 
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   const [isError, setError] = useState(false);
 
@@ -32,26 +33,24 @@ export default function RegistrationFormComponent() {
     marginTop: "20px",
   });
 
+  const popup = useSelector((state) => state.popup.value);
+
   const token = Cookies.get("authorizationToken");
 
-  let popup = useSelector((state) => state.popup.value);
-
-  let dispatch = useDispatch();
-
-  console.log(popup, "popup");
+  useEffect(() => refreshStudentsAndCourses(), []);
 
   function refreshStudentsAndCourses() {
     retrieveAllCoursesApi(token)
       .then((response) => {
         setCourses(response.data);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log(error, "error-refreshStudentsAndCourses"));
 
     retrieveAllStudentsApi(token)
       .then((response) => {
         setStudents(response.data);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log(error, "error-refreshStudentsAndCourses"));
   }
 
   function closePopup() {
@@ -60,7 +59,6 @@ export default function RegistrationFormComponent() {
   }
 
   function onSubmit(values) {
-    console.log(values);
 
     const studentId = values.studentId;
     const courseId = values.courseId;
@@ -74,20 +72,16 @@ export default function RegistrationFormComponent() {
 
     addRegistrationApi(registration, studentId, courseId, token)
       .then((response) => {
-        console.log(response.status);
         if (response.status == 201) {
           setStudentId(studentId);
           setCourseId(courseId);
           dispatch(setPopup(true));
-          // navigate("/registrations");
         } else {
           setError(true);
-          console.log("inside else");
         }
       })
       .catch((error) => {
-        console.log(error.ErrorMessage);
-        console.log("inside catch");
+        console.log(error.ErrorMessage, "error message");
         setError(true);
       });
   }
@@ -173,7 +167,7 @@ export default function RegistrationFormComponent() {
       <PopupComponent
         trigger={popup}
         heading={"Registration done !"}
-        message={`Successfully registered Course(${courseId}) for Student(${studentId}) !`}
+        message={`Successfully registered Course[${courseId}] for Student[${studentId}]`}
         closePopup={closePopup}
       />
     </div>

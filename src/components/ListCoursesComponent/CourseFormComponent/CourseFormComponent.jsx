@@ -11,7 +11,10 @@ import Cookies from "js-cookie";
 import PopupComponent from "../../PopupComponent/PopupComponent";
 
 export default function CourseFormComponent(props) {
+
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   const [isError, setError] = useState(false);
 
@@ -21,17 +24,13 @@ export default function CourseFormComponent(props) {
 
   const [operation, setOperation] = useState("");
 
-  const token = Cookies.get("authorizationToken");
-
-  let popup = useSelector((state) => state.popup.value);
-
-  let dispatch = useDispatch();
-
-  console.log(popup, "popup");
-
   const [style, setStyle] = useState({
     marginTop: "20px",
   });
+
+  const popup = useSelector((state) => state.popup.value);  
+
+  const token = Cookies.get("authorizationToken");
 
   function closePopup() {
     dispatch(setPopup(false));
@@ -39,7 +38,7 @@ export default function CourseFormComponent(props) {
   }
 
   function onSubmit(values) {
-    console.log(values);
+
     const course = {
       courseId: props.course.courseId,
       courseName: values.courseName,
@@ -48,19 +47,15 @@ export default function CourseFormComponent(props) {
     };
 
     if (values.courseId !== undefined) {
-      console.log(values.courseId);
-      // setError(false);
 
       updateCourseApi(course, token)
-        .then((response) => {
-          console.log(response);
+        .then(() => {
           setOperation("updated");
           setCourseName(values.courseName);
           dispatch(setPopup(true));
-          // navigate('/courses');
         })
         .catch((error) => {
-          console.log(error.response.status);
+          console.log(error.response.status, "error response status");
           if (error.response.status == 400) {
             setError(true);
             setErrorMessage("Course already present!");
@@ -73,22 +68,18 @@ export default function CourseFormComponent(props) {
       return;
     }
 
-    console.log("Undefined");
-
     addCourseApi(course, token)
       .then((response) => {
-        console.log(response.status);
         if (response.status == 201) {
           setOperation("added");
           setCourseName(values.courseName);
           dispatch(setPopup(true));
-          // navigate('/courses');
         } else {
           setError(true);
         }
       })
       .catch((error) => {
-        console.log(error.response.status);
+        console.log(error.response.status, "error response status");
         if (error.response.status == 409) {
           setError(true);
           setErrorMessage("Course already present!");
@@ -134,10 +125,10 @@ export default function CourseFormComponent(props) {
 
   return (
     <div>
-
-      <div 
+      <div
         style={{ filter: popup ? "blur(5px)" : "none" }}
-        className="course-form">
+        className="course-form"
+      >
         <Formik
           initialValues={{
             courseId: props.course.courseId,
@@ -218,7 +209,6 @@ export default function CourseFormComponent(props) {
         message={`Successfully ${operation} Course ${courseName} !`}
         closePopup={closePopup}
       />
-
     </div>
   );
 }

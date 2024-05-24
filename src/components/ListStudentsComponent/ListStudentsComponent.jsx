@@ -5,53 +5,52 @@ import { setPopup } from "../../slices/popupSlice";
 import { useEffect, useState } from "react";
 import { retrieveAllStudentsApi } from "../../api/StudentApiService";
 import StudentComponent from "./StudentComponent/StudentComponent";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import PopupComponent from "../PopupComponent/PopupComponent";
 
 export default function ListStudentsComponent() {
+
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   const [studentArray, setStudentArray] = useState([]);
 
   const [isError, setError] = useState(false);
 
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");  
 
-  useEffect(() => refreshStudents(), []);
+  const popup = useSelector((state) => state.popup.value);
+
+  const deletedStudent = useSelector((state) => state.deletedStudent.value);
 
   const token = Cookies.get("authorizationToken");
 
-  let popup = useSelector((state) => state.popup.value);
-
-  let deletedStudent = useSelector((state) => state.deletedStudent.value);
-
-  let dispatch = useDispatch();
-
-  console.log(popup, "popup");
+  useEffect(() => refreshStudents(), []);
 
   function refreshStudents() {
     retrieveAllStudentsApi(token)
       .then((response) => {
         setStudentArray(response.data);
-        console.log(studentArray);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log(error, "error-refreshStudents"));
   }
 
   function closePopup() {
     dispatch(setPopup(false));
   }
 
-  function navigateToAddStudent(){
+  function navigateToAddStudent() {
     navigate(`/add-student`);
   }
 
   return (
     <div>
-      <div 
-      style={{ filter: popup ? "blur(5px)" : "none" }}
-      className="list-students">
+      <div
+        style={{ filter: popup ? "blur(5px)" : "none" }}
+        className="list-students"
+      >
         <div className="studentData">
           {studentArray.map((student) => {
             return (
@@ -69,11 +68,14 @@ export default function ListStudentsComponent() {
             );
           })}
         </div>
+        
         {isError && <p className="error-message">{errorMessage}</p>}
-        {/* <button className="addStudentButton">
-          <Link to={popup ? "#" : "/add-student"}>Add Student</Link>
-        </button> */}
-        <button disabled={popup} className="addStudentButton" onClick={(navigateToAddStudent)}>
+
+        <button
+          disabled={popup}
+          className="addStudentButton"
+          onClick={navigateToAddStudent}
+        >
           Add Student
         </button>
       </div>
@@ -81,7 +83,7 @@ export default function ListStudentsComponent() {
       <PopupComponent
         trigger={popup}
         heading={`Deleted Student !`}
-        message={`Successfully deleted Student(${deletedStudent}) !`}
+        message={`Successfully deleted Student - ${deletedStudent}`}
         closePopup={closePopup}
       />
     </div>

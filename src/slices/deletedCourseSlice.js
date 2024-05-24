@@ -4,7 +4,7 @@ const initialState = {
     value:  ""
 }
 
-const deletedStudentSlice = createSlice({
+const deletedCourseSlice = createSlice({
     name: "deletedCourse",
     initialState: initialState,
     reducers: {
