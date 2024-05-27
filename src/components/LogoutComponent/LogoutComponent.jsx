@@ -11,7 +11,7 @@ export default function LogoutComponent() {
       />
       <div className="logout-component">
         <h1>You are logged out!</h1>
-        <div>Thank you for using the App :)</div>
+        <div>Thank you for using the App 😃</div>
         <p className="login-again">
           <Link to="/login">Login Again</Link>
         </p>

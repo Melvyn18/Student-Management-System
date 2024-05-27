@@ -29,7 +29,7 @@ export default function StudentComponent(props) {
         console.log(error, "error-handleDelete");
         props.setError(true);
         props.setErrorMessage(
-          `${props.name} (${props.studentId}) has record in other tables`
+          `${props.name} [${props.studentId}] has record in other tables`
         );
       });
   }

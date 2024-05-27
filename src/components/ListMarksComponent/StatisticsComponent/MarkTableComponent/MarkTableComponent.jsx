@@ -3,18 +3,18 @@ import "./MarkTableComponent.css";
 export default function MarkTableComponent(props){
     return(
         <div>
-            {props.fieldValue == "Maximum" && !props.isError && !props.isCalculationError && (
+            {props.fieldValue === "Maximum" && !props.isError && !props.isCalculationError && (
         <p className="">
           The maximum marks obtained by the student is {props.maxValue}
         </p>
       )}
-      {props.fieldValue == "Average" && !props.isError && !props.isCalculationError && (
+      {props.fieldValue === "Average" && !props.isError && !props.isCalculationError && (
         <p className="">
           The average marks obtained by the student is {props.avgValue}
         </p>
       )}
 
-      {!props.isError && !props.isCalculationError && !(props.fieldValue=="") &&
+      {!props.isError && !props.isCalculationError && !(props.fieldValue==="") &&
       <table className="marks-table">
         <tr>
           <th>Student Id</th>

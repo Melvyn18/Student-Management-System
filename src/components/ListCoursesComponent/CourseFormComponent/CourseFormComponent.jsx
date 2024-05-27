@@ -56,10 +56,10 @@ export default function CourseFormComponent(props) {
         })
         .catch((error) => {
           console.log(error.response.status, "error response status");
-          if (error.response.status == 400) {
+          if (error.response.status === 400) {
             setError(true);
             setErrorMessage("Course already present!");
-          } else if (error.response.status == 422) {
+          } else if (error.response.status === 422) {
             setError(true);
             setErrorMessage("Please enter again with appropriate data!");
           }
@@ -70,7 +70,7 @@ export default function CourseFormComponent(props) {
 
     addCourseApi(course, token)
       .then((response) => {
-        if (response.status == 201) {
+        if (response.status === 201) {
           setOperation("added");
           setCourseName(values.courseName);
           dispatch(setPopup(true));
@@ -80,10 +80,10 @@ export default function CourseFormComponent(props) {
       })
       .catch((error) => {
         console.log(error.response.status, "error response status");
-        if (error.response.status == 409) {
+        if (error.response.status === 409) {
           setError(true);
           setErrorMessage("Course already present!");
-        } else if (error.response.status == 422) {
+        } else if (error.response.status === 422) {
           setError(true);
           setErrorMessage("Please enter again with appropriate data!");
         }
@@ -96,7 +96,7 @@ export default function CourseFormComponent(props) {
     let errors = {};
 
     if (
-      values.courseName == undefined ||
+      values.courseName === undefined ||
       values.courseName.length < 5 ||
       values.courseName.length > 20
     ) {
@@ -105,7 +105,7 @@ export default function CourseFormComponent(props) {
     }
 
     if (
-      values.courseDescription == undefined ||
+      values.courseDescription === undefined ||
       values.courseDescription.length < 10 ||
       values.courseDescription.length > 30
     ) {
@@ -114,7 +114,11 @@ export default function CourseFormComponent(props) {
       setStyle({ marginTop: "10px" });
     }
 
-    if (values.creditHours == null || values.creditHours < 0.5) {
+    if (
+      values.creditHours === undefined ||
+      values.creditHours === null || 
+      values.creditHours < 0.5
+    ) {
       errors.creditHours =
         "The course should have a minimum duration of 0.5 hrs";
       setStyle({ marginTop: "10px" });

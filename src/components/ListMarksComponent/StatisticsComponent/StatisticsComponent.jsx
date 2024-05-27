@@ -1,7 +1,6 @@
 import "./StatisticsComponent.css";
-import { Formik, Form, ErrorMessage, Field } from "formik";
+import { Formik, Form } from "formik";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { retrieveAllCoursesApi } from "../../../api/CourseApiService";
 import { retrieveAllStudentsApi } from "../../../api/StudentApiService";
 import { retrieveAllMarksApi } from "../../../api/MarkApiService";
@@ -69,8 +68,8 @@ export default function StatisticsComponent() {
 
     marks.forEach((mark) => {
       if (
-        mark.student.studentId == studentId &&
-        mark.course.courseId == courseId
+        mark.student.studentId === studentId &&
+        mark.course.courseId === courseId
       ) {
         studentMarks.push(mark);
       }
@@ -84,10 +83,10 @@ export default function StatisticsComponent() {
       const total = studentscores.reduce((total, val) => total + val);
       const length = studentscores.length;
 
-      if (fieldValue == "Maximum") {
+      if (fieldValue === "Maximum") {
         setMaxValue(Math.max(...studentscores));
       } 
-      else if (fieldValue == "Average") {
+      else if (fieldValue === "Average") {
         setAvgValue(total / length);
       }
 
@@ -106,12 +105,12 @@ export default function StatisticsComponent() {
 
     let errors = {};
 
-    if (values.courseId == undefined || values.courseId == "") {
+    if (values.courseId === undefined || values.courseId === "") {
       errors.courseId = "Select a Course";
       setStyle({ marginTop: "10px" });
     }
 
-    if (values.studentId == undefined || values.studentId == "") {
+    if (values.studentId === undefined || values.studentId === "") {
       errors.studentId = "Select a Student";
       setStyle({ marginTop: "10px" });
     }

@@ -1,5 +1,4 @@
 import "./App.css";
-import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import LoginComponent from "./components/LoginComponent/LoginComponent";
 import FooterComponent from "./components/FooterComponent/FooterComponent";
@@ -20,8 +19,6 @@ import StatisticsComponent from "./components/ListMarksComponent/StatisticsCompo
 import Cookies from "js-cookie";
 
 function AuthenticatedRoute({children}){
-
-  // let isLoggedIn = useSelector(state => state.isLoggedIn.value);
 
   let isLoggedIn = Cookies.get('loggedIn');
 
@@ -101,7 +98,6 @@ function App() {
           </AuthenticatedRoute>
           
           } />
-          {/* <Route path="/update-course/:id" element={<AddCourseComponent />} /> */}
 
           <Route path="/marks" element={
             <AuthenticatedRoute>
@@ -131,7 +127,7 @@ function App() {
           />
 
         </Routes>
-        {/* <FooterComponent /> */}
+        <FooterComponent />
       </BrowserRouter>
     </div>
   );

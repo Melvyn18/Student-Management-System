@@ -1,6 +1,5 @@
 import "./MarkComponent.css";
 import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
 import { setPopup } from "../../../slices/popupSlice";
 import { setDeletedMark } from "../../../slices/deletedMarkSlice";
 import { setDeletedStudent } from "../../../slices/deletedStudentSlice";

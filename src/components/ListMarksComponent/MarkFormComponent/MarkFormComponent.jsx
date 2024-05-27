@@ -76,7 +76,7 @@ export default function MarkFormComponent() {
 
     addMarkApi(mark, studentId, courseId, token)
       .then((response) => {
-        if (response.status == 201) {
+        if (response.status === 201) {
           setStudentId(studentId);
           setCourseId(courseId);
           dispatch(setPopup(true));
@@ -86,13 +86,13 @@ export default function MarkFormComponent() {
       })
       .catch((error) => {
         console.log(error.response.status, "error response status");
-        if (error.response.status == 404) {
+        if (error.response.status === 404) {
           setError(true);
           setErrorMessage("Student not registered for the course!");
-        } else if (error.response.status == 409) {
+        } else if (error.response.status === 409) {
           setError(true);
           setErrorMessage("Record already present!");
-        } else if (error.response.status == 400) {
+        } else if (error.response.status === 400) {
           setError(true);
           setErrorMessage("Please enter again with appropriate data!");
         }
@@ -104,27 +104,27 @@ export default function MarkFormComponent() {
 
     let errors = {};
 
-    if (values.assessmentType == null || values.assessmentType == "") {
+    if (values.assessmentType === null || values.assessmentType === "") {
       errors.assessmentType = "Provide assessment type";
       setStyle({ marginTop: "10px" });
     }
 
-    if (values.courseId == undefined || values.courseId == "") {
+    if (values.courseId === undefined || values.courseId === "") {
       errors.courseId = "Select a Course";
       setStyle({ marginTop: "10px" });
     }
 
-    if (values.studentId == undefined || values.studentId == "") {
+    if (values.studentId === undefined || values.studentId === "") {
       errors.studentId = "Select a Student";
       setStyle({ marginTop: "10px" });
     }
 
-    if (values.score == "" || values.score < 0 || values.score > 100) {
+    if (values.score === "" || values.score < 0 || values.score > 100) {
       errors.score = "Provide a valid score";
       setStyle({ marginTop: "10px" });
     }
 
-    if (values.assessmentDate == null || values.assessmentDate == "") {
+    if (values.assessmentDate === null || values.assessmentDate === "") {
       errors.assessmentDate = "Provide an assessment date";
       setStyle({ marginTop: "10px" });
     }

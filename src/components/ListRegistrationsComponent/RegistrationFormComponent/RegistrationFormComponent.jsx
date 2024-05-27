@@ -72,7 +72,7 @@ export default function RegistrationFormComponent() {
 
     addRegistrationApi(registration, studentId, courseId, token)
       .then((response) => {
-        if (response.status == 201) {
+        if (response.status === 201) {
           setStudentId(studentId);
           setCourseId(courseId);
           dispatch(setPopup(true));
@@ -91,17 +91,17 @@ export default function RegistrationFormComponent() {
 
     let errors = {};
 
-    if (values.registrationDate == null || values.registrationDate == "") {
+    if (values.registrationDate === null || values.registrationDate === "") {
       errors.registrationDate = "Provide a registration date";
       setStyle({ marginTop: "10px" });
     }
 
-    if (values.courseId == undefined || values.courseId == "") {
+    if (values.courseId === undefined || values.courseId === "") {
       errors.courseId = "Select a Course";
       setStyle({ marginTop: "10px" });
     }
 
-    if (values.studentId == undefined || values.studentId == "") {
+    if (values.studentId === undefined || values.studentId === "") {
       errors.studentId = "Select a Student";
       setStyle({ marginTop: "10px" });
     }

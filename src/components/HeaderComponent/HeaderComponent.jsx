@@ -40,7 +40,7 @@ export default function HeaderComponent() {
         <img
           className="profileImage"
           src={isLoggedIn ? myImage : profileImage}
-          alt="profile image"
+          alt="profile"
         />
       </div>
 

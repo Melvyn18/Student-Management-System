@@ -4,13 +4,11 @@ import { change } from "../../slices/userSlice";
 import { setLoginStatus } from "../../slices/loginSlice";
 import { useSelector } from "react-redux";
 import { useState } from "react";
-import { apiClient } from "../../api/ApiClient";
 import { executeBasicAuthenticationService } from "../../api/AuthenticationApiService";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
 export default function LoginComponent() {
-
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -37,20 +35,12 @@ export default function LoginComponent() {
         Cookies.set("username", username, { expires: 1 });
 
         navigate("/welcome");
-
-        // apiClient.interceptors.request.use(
-        //     (config) => {
-        //         console.log('intercepting and adding a token')
-        //         config.headers.Authorization = baToken
-        //         return config
-        //     }
-        // )
       }
     } catch (error) {
       setError(true);
-      if (error.message == "Network Error") {
+      if (error.message === "Network Error") {
         setErrorMessage("Sorry... the server is down...");
-      } else if (error.response.status == 401) {
+      } else if (error.response.status === 401) {
         setErrorMessage("Incorrect Username or Password !");
       }
     }

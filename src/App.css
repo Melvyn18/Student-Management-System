@@ -4,9 +4,9 @@
 }
 
 body{
-  /* position: relative; */
-  background: #FAF6F0;
-  font-family: cursive;
+  background: #f7f7f7;
+  background: #F4EAE0;
+  background-image: url("https://www.transparenttextures.com/patterns/axiom-pattern.png");
 }
 
 .App {

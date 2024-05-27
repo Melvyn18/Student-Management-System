@@ -3,11 +3,13 @@
     left: 0;
     right: 0;
     top: 150px;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
+    font-weight: bold;
     text-shadow: 1px 1px gray;
 }
 
 .login .error-message{
+    font-weight: normal;
     font-size: 0.9rem;
     text-shadow: none;
     position: initial;

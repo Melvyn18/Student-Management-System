@@ -58,10 +58,10 @@ export default function StudentFormComponent(props) {
         })
         .catch((error) => {
           console.log(error.response.status, "error response status");
-          if (error.response.status == 400) {
+          if (error.response.status === 400) {
             setError(true);
             setErrorMessage("Repitition of Email Id is not allowed!");
-          } else if (error.response.status == 422) {
+          } else if (error.response.status === 422) {
             setError(true);
             setErrorMessage("Please enter again with appropriate data!");
           }
@@ -72,7 +72,7 @@ export default function StudentFormComponent(props) {
 
     addStudentApi(student, token)
       .then((response) => {
-        if (response.status == 201) {
+        if (response.status === 201) {
           setOperation("added");
           setStudentName(values.name);
           dispatch(setPopup(true));
@@ -82,10 +82,10 @@ export default function StudentFormComponent(props) {
       })
       .catch((error) => {
         console.log(error.response.status, "error response status");
-        if (error.response.status == 409) {
+        if (error.response.status === 409) {
           setError(true);
-          setErrorMessage("Repitition of Email Id is not allowed!");
-        } else if (error.response.status == 422) {
+          setErrorMessage("Repetition of Email Id is not allowed!");
+        } else if (error.response.status === 422) {
           setError(true);
           setErrorMessage("Please enter again with appropriate data!");
         }
@@ -114,15 +114,18 @@ export default function StudentFormComponent(props) {
     }
 
     if (
-      values.birthDate == null ||
-      values.birthDate == "" ||
-      values.birthDate == undefined
+      values.birthDate === null ||
+      values.birthDate === "" ||
+      values.birthDate === undefined
     ) {
       errors.birthDate = "Provide a Date";
       setStyle({ marginTop: "10px" });
     }
 
-    if (values.emailId == null || values.emailId == "") {
+    if (
+      values.emailId === undefined  || 
+      values.emailId === ""
+    ) {
       errors.emailId = "Provide a valid Email Id";
       setStyle({ marginTop: "10px" });
     }
